@@ -7,7 +7,7 @@
 
 ### Desktop Application
 ```bash
-  gradlew clean run
+  gradlew run
 ```
 
 ### Android Application

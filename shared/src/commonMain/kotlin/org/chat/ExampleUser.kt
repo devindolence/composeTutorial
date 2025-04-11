@@ -5,9 +5,9 @@ import kotlinproject.shared.generated.resources.Res
 
 val myUser = User("Me", picture = null)
 val friends = listOf(
-    User("Alex", picture = Res.drawable.stock1),
-    User("Casey", picture = Res.drawable.stock2),
-    User("Sam", picture = Res.drawable.stock3)
+    User("Alex", picture = null),
+    User("Casey", picture = null),
+    User("Sam", picture = null)
 )
 val friendMessages = listOf(
     "How's everybody doing today?",

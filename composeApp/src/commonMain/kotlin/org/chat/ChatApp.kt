@@ -24,6 +24,7 @@ import Message
 import Messages
 import SendMessage
 import androidx.compose.ui.layout.ContentScale
+import kotlinproject.composeapp.generated.resources.background
 
 val store = CoroutineScope(SupervisorJob()).createStore()
 
