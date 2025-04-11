@@ -1,14 +1,17 @@
 package org.chat
 
-import User
-import kotlinproject.shared.generated.resources.Res
-
-val myUser = User("Me", picture = null)
-val friends = listOf(
-    User("Alex", picture = null),
-    User("Casey", picture = null),
-    User("Sam", picture = null)
+data class UserKey(
+    val name: String,
+    val pictureKey: String?
 )
+
+val myUser = UserKey("Me", pictureKey = null)
+val friends = listOf(
+    UserKey("Alex", "stock1"),
+    UserKey("Casey", "stock2"),
+    UserKey("Sam", "stock3")
+)
+
 val friendMessages = listOf(
     "How's everybody doing today?",
     "I've been meaning to chat!",

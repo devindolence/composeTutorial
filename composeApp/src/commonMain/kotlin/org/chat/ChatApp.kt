@@ -63,7 +63,7 @@ fun ChatApp(displayTextField: Boolean = true) {
                         SendMessage { text ->
                             store.send(
                                 Action.SendMessage(
-                                    Message(myUser, text)
+                                    Message(getUser(myUser), text)
                                 )
                             )
                         }
@@ -85,7 +85,7 @@ fun ChatApp(displayTextField: Boolean = true) {
             store.send(
                 Action.SendMessage(
                     message = Message(
-                        user = thisFriend,
+                        user = getUser(thisFriend),
                         text = thisMessage
                     )
                 )
