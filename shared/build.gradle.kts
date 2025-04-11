@@ -1,3 +1,4 @@
+@file:Suppress("OPT_IN_IS_NOT_ENABLED")
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -6,19 +7,21 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.composeCompiler)
 }
 
 kotlin {
-    androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
-        }
-    }
+//    androidTarget {
+//        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+//        compilerOptions {
+//            jvmTarget.set(JvmTarget.JVM_11)
+//        }
+//    }
     
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+//    iosX64()
+//    iosArm64()
+//    iosSimulatorArm64()
     
     jvm()
     
@@ -40,8 +43,23 @@ kotlin {
     }
     
     sourceSets {
-        commonMain.dependencies {
-            // put your Multiplatform dependencies here
+        val commonMain by getting {
+            resources.srcDir("src/commonMain/resources")
+
+            commonMain.dependencies {
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material)
+                implementation(compose.ui)
+                implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
+                implementation(libs.androidx.lifecycle.viewmodel)
+                implementation(libs.androidx.lifecycle.runtime.compose)
+                // put your Multiplatform dependencies here
+                implementation(libs.androidx.lifecycle.viewmodel)
+                implementation(libs.androidx.lifecycle.runtime.compose)
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
+            }
         }
     }
 }
