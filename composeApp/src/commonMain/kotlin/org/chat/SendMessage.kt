@@ -18,16 +18,28 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
+import org.chat.ChatClient
 
 @Composable
-fun SendMessage(sendMessage: (String) -> Unit) {
+fun SendMessage(message: (String) -> Unit) {
     var inputText by remember { mutableStateOf("") }
     TextField(
         modifier = Modifier.fillMaxWidth()
             .background(MaterialTheme.colors.background)
+            .onKeyEvent { keyEvent: KeyEvent ->
+                if (keyEvent.type == KeyEventType.KeyUp && keyEvent.key == Key.Enter) {
+                    if (inputText.isNotEmpty()) {
+                        ChatClient.sendMessage(inputText)
+                        message(inputText)
+                        inputText = ""
+                    }
+                    true
+                } else false
+            }
             .padding(10.dp),
         colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
         value = inputText,
@@ -42,7 +54,8 @@ fun SendMessage(sendMessage: (String) -> Unit) {
                 Row(
                     modifier = Modifier
                         .clickable {
-                            sendMessage(inputText)
+                            ChatClient.sendMessage(inputText)
+                            message(inputText)
                             inputText = ""
                         }
                         .pointerHoverIcon(PointerIcon.Hand)

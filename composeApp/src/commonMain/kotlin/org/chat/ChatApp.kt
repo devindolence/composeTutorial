@@ -1,5 +1,10 @@
 package org.chat
 
+import Action
+import ChatColors
+import Message
+import Messages
+import SendMessage
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,20 +16,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.sp
 import createStore
 import kotlinproject.composeapp.generated.resources.Res
+import kotlinproject.composeapp.generated.resources.background
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import Message
-import Messages
-import SendMessage
-import androidx.compose.ui.layout.ContentScale
-import kotlinproject.composeapp.generated.resources.background
 
 val store = CoroutineScope(SupervisorJob()).createStore()
 
@@ -49,6 +50,17 @@ fun ChatAppWithScaffold(displayTextField: Boolean = true) {
 @Composable
 fun ChatApp(displayTextField: Boolean = true) {
     val state by store.stateFlow.collectAsState()
+
+    LaunchedEffect(Unit) {
+        ChatClient.startChat { message ->
+            store.send(
+                Action.SendMessage(
+                    Message(getUser(friends[0]), message)
+                )
+            )
+        }
+    }
+
     Theme {
         Surface {
             Box(modifier = Modifier.fillMaxSize()) {
@@ -66,31 +78,11 @@ fun ChatApp(displayTextField: Boolean = true) {
                                     Message(getUser(myUser), text)
                                 )
                             )
+
                         }
                     }
                 }
             }
-        }
-    }
-    LaunchedEffect(Unit) {
-        var lastFriend = friends.random()
-        var lastMessage = friendMessages.random()
-        while (true) {
-            val thisFriend = friends.random()
-            val thisMessage = friendMessages.random()
-            if(thisFriend == lastFriend) continue
-            if(thisMessage == lastMessage) continue
-            lastFriend = thisFriend
-            lastMessage = thisMessage
-            store.send(
-                Action.SendMessage(
-                    message = Message(
-                        user = getUser(thisFriend),
-                        text = thisMessage
-                    )
-                )
-            )
-            delay(5000)
         }
     }
 }

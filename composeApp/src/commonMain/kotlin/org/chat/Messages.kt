@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import org.chat.getUser
 import org.chat.myUser
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
@@ -38,7 +39,7 @@ internal inline fun Messages(messages: List<Message>) {
     ) {
         item { Spacer(Modifier.size(20.dp)) }
         items(messages, key = { it.id }) {
-            ChatMessage(isMyMessage = it.user == myUser, it)
+            ChatMessage(isMyMessage = it.user == getUser(myUser), it)
         }
         item {
             Box(Modifier.height(70.dp))
