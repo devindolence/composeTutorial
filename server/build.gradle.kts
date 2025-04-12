@@ -19,6 +19,7 @@ dependencies {
     implementation(libs.ktor.server.netty)
     implementation("io.ktor:ktor-server-websockets:$ktor")
     implementation("io.ktor:ktor-server-core:$ktor")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
     testImplementation(libs.ktor.server.tests)
     testImplementation(libs.kotlin.test.junit)
 }

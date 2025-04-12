@@ -50,14 +50,19 @@ fun ChatAppWithScaffold(displayTextField: Boolean = true) {
 @Composable
 fun ChatApp(displayTextField: Boolean = true) {
     val state by store.stateFlow.collectAsState()
+    val user = friends.random()
 
     LaunchedEffect(Unit) {
         ChatClient.startChat { message ->
-            store.send(
-                Action.SendMessage(
-                    Message(getUser(friends[0]), message)
+            // todo server logic
+            val userKey = friends.find { v -> v.pictureKey == message.sender }?.let { getUser(it) }
+            if (userKey != null && message.sender != user.pictureKey) {
+                store.send(
+                    Action.SendMessage(
+                        Message(getUser(myUser), message.content)
+                    )
                 )
-            )
+            }
         }
     }
 
@@ -72,13 +77,12 @@ fun ChatApp(displayTextField: Boolean = true) {
                         Messages(state.messages)
                     }
                     if (displayTextField) {
-                        SendMessage { text ->
+                        SendMessage(currentUser = user.pictureKey) { text ->
                             store.send(
                                 Action.SendMessage(
-                                    Message(getUser(myUser), text)
+                                    Message(getUser(user), text)
                                 )
                             )
-
                         }
                     }
                 }

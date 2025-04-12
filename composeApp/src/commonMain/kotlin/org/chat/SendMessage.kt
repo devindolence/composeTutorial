@@ -3,18 +3,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,9 +15,13 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import org.chat.ChatClient
+import org.chat.Message
 
 @Composable
-fun SendMessage(message: (String) -> Unit) {
+fun SendMessage(
+    currentUser: String?,
+    message: (String) -> Unit
+) {
     var inputText by remember { mutableStateOf("") }
     TextField(
         modifier = Modifier.fillMaxWidth()
@@ -33,7 +29,8 @@ fun SendMessage(message: (String) -> Unit) {
             .onKeyEvent { keyEvent: KeyEvent ->
                 if (keyEvent.type == KeyEventType.KeyUp && keyEvent.key == Key.Enter) {
                     if (inputText.isNotEmpty()) {
-                        ChatClient.sendMessage(inputText)
+                        val messageObj = Message(sender = currentUser!!, content = inputText)
+                        ChatClient.sendMessage(messageObj)
                         message(inputText)
                         inputText = ""
                     }
@@ -54,7 +51,8 @@ fun SendMessage(message: (String) -> Unit) {
                 Row(
                     modifier = Modifier
                         .clickable {
-                            ChatClient.sendMessage(inputText)
+                            val messageObj = Message(sender = currentUser!!, content = inputText)
+                            ChatClient.sendMessage(messageObj)
                             message(inputText)
                             inputText = ""
                         }

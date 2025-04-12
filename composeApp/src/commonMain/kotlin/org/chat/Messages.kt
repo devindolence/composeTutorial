@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import kotlinx.serialization.Serializable
 import org.chat.getUser
 import org.chat.myUser
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -46,7 +47,6 @@ internal inline fun Messages(messages: List<Message>) {
         }
     }
 }
-
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable

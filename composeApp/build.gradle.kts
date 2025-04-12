@@ -52,6 +52,7 @@ kotlin {
                 implementation(projects.shared)
 
                 implementation("io.ktor:ktor-client-core:3.1.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
             }
         }
         val desktopMain by getting {
