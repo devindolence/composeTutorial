@@ -25,40 +25,40 @@ fun main() {
             masking = false
         }
         routing {
-            chatHandler()
+            webSocket("/chat") { // 웹소켓 엔드포인트
+                chatHandler()
+            }
         }
     }.start(wait = true)
 }
 
 // todo refactor package modules
-private fun Routing.chatHandler() {
-    webSocket("/chat") { // 웹소켓 엔드포인트
-        val clientId = UUID.randomUUID().toString()
-        val clientSession = ClientSession(clientId, this)
-        connections.add(clientSession)
-        try {
-            incoming.consumeEach { frame ->
-                if (frame is Frame.Text) {
-                    val receivedText = frame.readText()
-                    val check = Json.decodeFromString<Message>(receivedText)
-                    println("수신 메시지 (클라이언트 $clientId): $check")
-                    connections
-                        .filter { it.id != clientId }
-                        .asSequence()
-                        .forEach {client ->
-                            try {
-                                println("client id: ${client.id}, session: ${client.session}")
-                                client.session.send(Frame.Text(receivedText))
-                            } catch (e: Exception) {
-                                println("에러 발생: ${e.localizedMessage}")
-                            }
+private suspend fun DefaultWebSocketServerSession.chatHandler() {
+    val clientId = UUID.randomUUID().toString()
+    val clientSession = ClientSession(clientId, this)
+    connections.add(clientSession)
+    try {
+        incoming.consumeEach { frame ->
+            if (frame is Frame.Text) {
+                val receivedText = frame.readText()
+                val check = Json.decodeFromString<Message>(receivedText)
+                println("수신 메시지 (클라이언트 $clientId): $check")
+                connections
+                    .filter { it.id != clientId }
+                    .asSequence()
+                    .forEach { client ->
+                        try {
+                            println("client id: ${client.id}, session: ${client.session}")
+                            client.session.send(Frame.Text(receivedText))
+                        } catch (e: Exception) {
+                            println("에러 발생: ${e.localizedMessage}")
                         }
-                }
+                    }
             }
-        } catch (e: Exception) {
-            println("에러 발생: ${e.localizedMessage}")
-        } finally {
-            connections.remove(clientSession)
         }
+    } catch (e: Exception) {
+        println("에러 발생: ${e.localizedMessage}")
+    } finally {
+        connections.remove(clientSession)
     }
 }
