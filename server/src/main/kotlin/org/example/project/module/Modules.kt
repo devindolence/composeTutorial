@@ -5,9 +5,16 @@ import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
+import io.ktor.server.sessions.*
+import io.ktor.server.websocket.*
+import org.example.project.model.UserSession
+import org.example.project.routes.chatRoute
+import org.example.project.routes.jwtLoginRoute
+import kotlin.time.Duration.Companion.seconds
 
-fun Application.configureJWT() {
-    authentication {
+fun Application.authModule() {
+    // JWT 인증 설치 및 설정
+    install(Authentication) {
         jwt("jwt-auth") {
             realm = "chat-server"
             verifier(
@@ -22,4 +29,16 @@ fun Application.configureJWT() {
             }
         }
     }
+    jwtLoginRoute() // login route
+}
+
+fun Application.webSocketModule() {
+    install(WebSockets) {
+        pingPeriod = 15.seconds
+        timeout = 15.seconds
+        maxFrameSize = Long.MAX_VALUE
+        masking = false
+    }
+
+    chatRoute() // chat session
 }
