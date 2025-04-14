@@ -54,15 +54,11 @@ fun ChatApp(displayTextField: Boolean = true) {
 
     LaunchedEffect(Unit) {
         ChatClient.startChat { message ->
-            // todo server logic
-            val userKey = friends.find { v -> v.pictureKey == message.sender }?.let { getUser(it) }
-            if (userKey != null && message.sender != user.pictureKey) {
-                store.send(
-                    Action.SendMessage(
-                        Message(getUser(myUser), message.content)
-                    )
+            store.send(
+                Action.SendMessage(
+                    Message(getUser(myUser), message.content)
                 )
-            }
+            )
         }
     }
 

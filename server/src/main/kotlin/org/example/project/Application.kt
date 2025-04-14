@@ -25,37 +25,39 @@ fun main() {
             masking = false
         }
         routing {
-            webSocket("/chat") { // 웹소켓 엔드포인트
-                val clientId = UUID.randomUUID().toString()
-                val clientSession = ClientSession(clientId, this)
-                connections.add(clientSession)
-//                clientSession.session.send("서버에 접속하셨습니다. [ID: $clientId]")
-                // 클라이언트로부터 받은 메시지 브로드캐스팅 예제
-                try {
-                    incoming.consumeEach { frame ->
-                        if (frame is Frame.Text) {
-                            val receivedText = frame.readText()
-                            val check = Json.decodeFromString<Message>(receivedText)
-                            println("수신 메시지 (클라이언트 $clientId): $check")
-                            val iterator = connections.iterator()
-                            while (iterator.hasNext()) {
-                                val client = iterator.next()
-                                try {
-                                    println("client id: ${client.id}, session: ${client.session}")
-                                    client.session.send(Frame.Text(receivedText))
-                                } catch (e: Exception) {
-                                    println("에러 발생: ${e.localizedMessage}")
-                                    iterator.remove()
-                                }
-                            }
-                        }
-                    }
-                } catch (e: Exception) {
-                    println("에러 발생: ${e.localizedMessage}")
-                } finally {
-                    connections.remove(clientSession)
-                }
-            }
+            chatHandler()
         }
     }.start(wait = true)
+}
+
+private fun Routing.chatHandler() {
+    webSocket("/chat") { // 웹소켓 엔드포인트
+        val clientId = UUID.randomUUID().toString()
+        val clientSession = ClientSession(clientId, this)
+        connections.add(clientSession)
+        try {
+            incoming.consumeEach { frame ->
+                if (frame is Frame.Text) {
+                    val receivedText = frame.readText()
+                    val check = Json.decodeFromString<Message>(receivedText)
+                    println("수신 메시지 (클라이언트 $clientId): $check")
+                    connections
+                        .filter { it.id != clientId }
+                        .asSequence()
+                        .forEach {client ->
+                            try {
+                                println("client id: ${client.id}, session: ${client.session}")
+                                client.session.send(Frame.Text(receivedText))
+                            } catch (e: Exception) {
+                                println("에러 발생: ${e.localizedMessage}")
+                            }
+                        }
+                }
+            }
+        } catch (e: Exception) {
+            println("에러 발생: ${e.localizedMessage}")
+        } finally {
+            connections.remove(clientSession)
+        }
+    }
 }
