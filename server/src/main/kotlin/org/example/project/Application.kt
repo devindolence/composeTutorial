@@ -30,6 +30,7 @@ fun main() {
     }.start(wait = true)
 }
 
+// todo refactor package modules
 private fun Routing.chatHandler() {
     webSocket("/chat") { // 웹소켓 엔드포인트
         val clientId = UUID.randomUUID().toString()
