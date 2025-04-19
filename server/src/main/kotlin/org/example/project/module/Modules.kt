@@ -2,14 +2,20 @@ package org.example.project.module
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import io.ktor.server.sessions.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
-import org.example.project.model.UserSession
+import org.example.project.model.User
 import org.example.project.routes.chatRoute
 import org.example.project.routes.jwtLoginRoute
+import org.example.project.service.UserService
+import org.example.project.utils.hashPassword
+import java.time.LocalDateTime
 import kotlin.time.Duration.Companion.seconds
 
 fun Application.authModule() {
@@ -41,4 +47,26 @@ fun Application.webSocketModule() {
     }
 
     chatRoute() // chat session
+}
+
+
+fun Application.module() {
+    val userService = UserService()
+
+    // 예: 회원가입 라우트
+    routing {
+        post("/api/register") {
+            val req = call.receive<User>()
+            println("posted user name: ${req.username}")
+            val userId = userService.createUser(
+                User(
+                    userId = 0,
+                    username = req.username,
+                    password = hashPassword(req.password),
+                    createdAt = LocalDateTime.now()
+                )
+            )
+            call.respond(status = HttpStatusCode.Created, message = userId)
+        }
+    }
 }

@@ -1,10 +1,12 @@
 package org.example.project.model
 
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.dao.id.IntIdTable
+import org.jetbrains.exposed.sql.javatime.datetime
+import java.time.LocalDateTime
 
-object Users : Table() {
-    val id = integer("id").autoIncrement()
-    val username = varchar("username", 50).uniqueIndex()
-    val password = varchar("password", 60)
-    override val primaryKey = PrimaryKey(id)
+object Users : IntIdTable("users") {
+    val userId = integer(name = "user_id").autoIncrement().uniqueIndex()
+    val username = varchar(name = "username", length = 50)
+    val password = varchar(name = "password", length = 60)
+    val createdAt = datetime("created_at").clientDefault { LocalDateTime.now() }
 }

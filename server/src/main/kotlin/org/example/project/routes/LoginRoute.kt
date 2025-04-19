@@ -4,14 +4,12 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.example.project.model.Users
 import org.example.project.utils.verifyPassword
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
 
@@ -23,7 +21,8 @@ fun Application.jwtLoginRoute() {
             val password = credentials["password"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Password required")
 
             val user = transaction {
-                Users.select { Users.username eq username }
+                Users.selectAll()
+                    .where{ Users.username eq username }
                     .singleOrNull()
             }
             if (user != null && verifyPassword(password, user[Users.password])) {
@@ -31,7 +30,7 @@ fun Application.jwtLoginRoute() {
                     .withAudience("chat_audience")
                     .withIssuer("ktor.io")
                     .withClaim("username", username)
-                    .withClaim("userId", user[Users.id])
+                    .withClaim("userId", user[Users.userId])
                     .withExpiresAt(Date(System.currentTimeMillis() + 10 * 60 * 1000))
                     .sign(Algorithm.HMAC256("secret"))
                 call.respond(mapOf("token" to token))

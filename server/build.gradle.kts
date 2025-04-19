@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.ktor)
+    kotlin("plugin.serialization") version "2.1.20"
     application
 }
 
@@ -19,10 +20,14 @@ dependencies {
     implementation(libs.ktor.server.netty)
     implementation("io.ktor:ktor-server-websockets:$ktor")
     implementation("io.ktor:ktor-server-core:$ktor")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
     implementation("io.ktor:ktor-server-auth:3.1.2")
     implementation("io.ktor:ktor-server-auth-jwt:3.1.2")
     implementation("io.ktor:ktor-server-auth:3.1.2")
+    implementation("io.ktor:ktor-server-content-negotiation:3.1.2")
+    implementation("io.ktor:ktor-serialization-jackson:3.1.2")
+    implementation("io.ktor:ktor-server-content-negotiation:3.1.2")
     testImplementation(libs.ktor.server.tests)
     testImplementation(libs.kotlin.test.junit)
 
@@ -31,6 +36,9 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:0.59.0")
     implementation("org.jetbrains.exposed:exposed-dao:0.59.0")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.59.0")
+    implementation("org.jetbrains.exposed:exposed-java-time:0.59.0")
+    // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-datetime-jvm
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.6.1")
     implementation("org.postgresql:postgresql:42.7.5") // PostgreSQL 드라이버
 
     // 비밀번호 암호화를 위한 라이브러리 (예: BCrypt)
