@@ -5,23 +5,23 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 
 data class Message(
-    val user: User,
+    val userProfile: UserProfile,
     val text: String,
     val seconds: Long,
     val id: Long
 ) {
     constructor(
-        user: User,
+        userProfile: UserProfile,
         text: String
     ) : this(
-        user = user,
+        userProfile = userProfile,
         text = text,
         seconds = Clock.System.now().epochSeconds,
         id = Random.nextLong()
     )
 }
 
-data class User(
+data class UserProfile(
     val name: String,
     val color: Color = ColorProvider.getColor(),
     val picture: DrawableResource?

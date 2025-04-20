@@ -1,4 +1,4 @@
-package org.chat
+package org.example.project.chat
 
 import io.ktor.client.*
 import io.ktor.client.plugins.websocket.*

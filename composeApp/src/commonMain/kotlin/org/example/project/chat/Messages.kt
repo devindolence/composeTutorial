@@ -19,9 +19,8 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import kotlinx.serialization.Serializable
-import org.chat.getUser
-import org.chat.myUser
+import org.example.project.chat.getUser
+import org.example.project.chat.myUser
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
@@ -40,7 +39,7 @@ internal inline fun Messages(messages: List<Message>) {
     ) {
         item { Spacer(Modifier.size(20.dp)) }
         items(messages, key = { it.id }) {
-            ChatMessage(isMyMessage = it.user == getUser(myUser), it)
+            ChatMessage(isMyMessage = it.userProfile == getUser(myUser), it)
         }
         item {
             Box(Modifier.height(70.dp))
@@ -50,14 +49,14 @@ internal inline fun Messages(messages: List<Message>) {
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun UserPic(user: User) {
+fun UserPic(userProfile: UserProfile) {
     val imageSize = 48f
-    val painter = user.picture?.let {
+    val painter = userProfile.picture?.let {
         painterResource(it)
     } ?: object : Painter() {
         override val intrinsicSize: Size = Size(imageSize, imageSize)
         override fun DrawScope.onDraw() {
-            drawRect(user.color, size = Size(imageSize * 4, imageSize * 4))
+            drawRect(userProfile.color, size = Size(imageSize * 4, imageSize * 4))
         }
     }
     Image(

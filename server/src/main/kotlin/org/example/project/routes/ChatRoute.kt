@@ -10,7 +10,7 @@ import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.serialization.json.Json
-import org.chat.Message
+import org.example.project.chat.Message
 import org.example.project.ClientSession
 import org.example.project.connections
 import java.util.*

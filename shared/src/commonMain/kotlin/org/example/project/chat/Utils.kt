@@ -1,4 +1,4 @@
-package org.chat
+package org.example.project.chat
 
 data class UserKey(
     val name: String,
