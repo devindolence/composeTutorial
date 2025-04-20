@@ -1,3 +1,5 @@
+import org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestFramework
+
 plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.ktor)
@@ -18,18 +20,26 @@ dependencies {
     implementation(libs.logback)
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)
-    implementation("io.ktor:ktor-server-websockets:$ktor")
-    implementation("io.ktor:ktor-server-core:$ktor")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor")
+    implementation(libs.ktor.server.websockets)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.content.negotiation)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.ktor.server.core)
+    testImplementation(libs.ktor.server.websockets)
+    testImplementation(libs.ktor.serialization.kotlinx.json)
+    testImplementation(libs.ktor.client.content.negotiation)
+
+    // Ktor
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
-    implementation("io.ktor:ktor-server-auth:3.1.2")
-    implementation("io.ktor:ktor-server-auth-jwt:3.1.2")
-    implementation("io.ktor:ktor-server-auth:3.1.2")
-    implementation("io.ktor:ktor-server-content-negotiation:3.1.2")
-    implementation("io.ktor:ktor-serialization-jackson:3.1.2")
-    implementation("io.ktor:ktor-server-content-negotiation:3.1.2")
-    testImplementation(libs.ktor.server.tests)
-    testImplementation(libs.kotlin.test.junit)
+    implementation("io.ktor:ktor-server-auth:${ktor}")
+    implementation("io.ktor:ktor-server-auth-jwt:${ktor}")
+    implementation("io.ktor:ktor-serialization-jackson:${ktor}")
+    testImplementation("io.ktor:ktor-client-content-negotiation:2.3.13")
+
+    // Kotest
+    testImplementation(libs.ktor.server.tests)         // ktor-server-tests-jvm
+    testImplementation("io.ktor:ktor-server-test-host:2.3.0")
 
     // HikariCP와 Exposed
     implementation("com.zaxxer:HikariCP:6.2.1") // HikariCP 라이브러리
@@ -51,4 +61,12 @@ tasks.named<Tar>("distTar") {
 
 tasks.named<Zip>("distZip") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+        showStandardStreams = true
+    }
 }
