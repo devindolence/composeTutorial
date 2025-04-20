@@ -15,7 +15,7 @@ import java.util.*
 
 fun Application.jwtLoginRoute() {
     routing {
-        post("/login-jwt") {
+        post("/api/login-jwt") {
             val credentials = call.receiveParameters()
             val username = credentials["username"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Username required")
             val password = credentials["password"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Password required")
@@ -33,7 +33,7 @@ fun Application.jwtLoginRoute() {
                     .withClaim("userId", user[Users.userId])
                     .withExpiresAt(Date(System.currentTimeMillis() + 10 * 60 * 1000))
                     .sign(Algorithm.HMAC256("secret"))
-                call.respond(mapOf("token" to token))
+                call.respond(mapOf("token" to token, "username" to username))
             } else {
                 call.respond(HttpStatusCode.Unauthorized, "인증 실패")
             }

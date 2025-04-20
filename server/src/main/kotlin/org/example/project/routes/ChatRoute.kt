@@ -33,7 +33,7 @@ fun Application.chatRoute() {
                             const token = params.get('token');
                             if (!token) {
                                 alert("토큰이 없습니다. 로그인 페이지로 이동합니다.");
-                                window.location.href = "/loginPage"; // 로그인 페이지 경로 설정
+                                window.location.href = "/login-jwt"; // 로그인 페이지 경로 설정
                                 return;
                             }
                             // WebSocket 연결 시 토큰을 쿼리 파라미터로 포함시킵니다.

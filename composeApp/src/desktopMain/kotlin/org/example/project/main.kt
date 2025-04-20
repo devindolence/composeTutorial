@@ -10,6 +10,10 @@ fun main() = application {
         title = "KotlinProject",
     ) {
 //        ChatAppWithScaffold()
-        AuthScreen()
+        AuthScreen(
+            onSuccess = { username, jwtToken ->
+                println("로그인 성공: $username, JWT: $jwtToken")
+            }
+        )
     }
 }

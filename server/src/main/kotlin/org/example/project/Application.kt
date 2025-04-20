@@ -22,7 +22,6 @@ fun main() {
         port = 8080,
     ) {
         install(ContentNegotiation) {
-            // Configure content negotiation
             json()
         }
         initDatabase()
