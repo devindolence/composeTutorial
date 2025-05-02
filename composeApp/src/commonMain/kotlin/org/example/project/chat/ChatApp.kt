@@ -29,7 +29,7 @@ val store = CoroutineScope(SupervisorJob()).createStore()
 
 @Composable
 @Preview
-fun ChatAppWithScaffold(displayTextField: Boolean = true) {
+fun ChatAppWithScaffold(username: String, token: String, displayTextField: Boolean = true) {
     Theme {
         Scaffold(
             topBar = {
