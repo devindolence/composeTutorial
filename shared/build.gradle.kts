@@ -54,7 +54,7 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
         }
 
-        jsMain.dependencies {
+        wasmJsMain.dependencies {
             implementation(libs.ktor.client.js)
             implementation(libs.ktor.client.logging)
             implementation(libs.ktor.serialization.kotlinx.json)

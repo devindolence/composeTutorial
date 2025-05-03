@@ -1,7 +1,6 @@
+import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
@@ -12,7 +11,7 @@ plugins {
 
 kotlin {
     jvm("desktop")
-    
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         moduleName = "composeApp"
@@ -32,7 +31,7 @@ kotlin {
         }
         binaries.executable()
     }
-    
+
     sourceSets {
         all {
             languageSettings {
@@ -45,12 +44,12 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material)
                 implementation(compose.ui)
+                @OptIn(ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.androidx.lifecycle.viewmodel)
                 implementation(libs.androidx.lifecycle.runtime.compose)
                 implementation(projects.shared)
-                implementation(libs.kotlinx.coroutines.swing)
 
                 implementation("io.ktor:ktor-client-core:3.1.2")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
@@ -59,6 +58,7 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
+                implementation(libs.kotlinx.coroutines.swing)
 
                 implementation("io.ktor:ktor-client-cio:3.1.2")
             }
