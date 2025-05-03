@@ -1,7 +1,6 @@
-package org.chat
+package org.example.project.chat
 
 import Action
-import ChatColors
 import Message
 import Messages
 import SendMessage
@@ -15,14 +14,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.unit.sp
 import createStore
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.background
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import org.example.project.theme.Theme
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -31,7 +29,7 @@ val store = CoroutineScope(SupervisorJob()).createStore()
 
 @Composable
 @Preview
-fun ChatAppWithScaffold(displayTextField: Boolean = true) {
+fun ChatAppWithScaffold(username: String, token: String, displayTextField: Boolean = true) {
     Theme {
         Scaffold(
             topBar = {
@@ -83,20 +81,6 @@ fun ChatApp(displayTextField: Boolean = true) {
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun Theme(content: @Composable () -> Unit) {
-    MaterialTheme(
-        colors = lightColors(
-            surface = Color(ChatColors.SURFACE),
-            background = Color(ChatColors.TOP_GRADIENT.last()),
-        ),
-    ) {
-        ProvideTextStyle(LocalTextStyle.current.copy(letterSpacing = 0.sp)) {
-            content()
         }
     }
 }

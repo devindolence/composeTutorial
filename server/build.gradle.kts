@@ -1,5 +1,3 @@
-import org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestFramework
-
 plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.ktor)
@@ -22,7 +20,7 @@ dependencies {
     implementation(libs.ktor.server.netty)
     implementation(libs.ktor.server.websockets)
     implementation(libs.ktor.serialization.kotlinx.json)
-    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.server.content.negotiation)
 
     testImplementation(libs.junit)
     testImplementation(libs.ktor.server.core)

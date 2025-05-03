@@ -2,7 +2,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.server.testing.*
 import org.example.project.main
 import org.example.project.model.User

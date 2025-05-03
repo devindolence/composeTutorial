@@ -39,8 +39,25 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.kotlinx.coroutines)
+
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.bundles.ktor.client)
+            implementation(libs.ktor.client.auth)
+        }
+
+        jvmMain.dependencies {
+            implementation(libs.ktor.client.cio)
+            implementation(libs.ktor.client.logging)
+            implementation(libs.ktor.serialization.kotlinx.json)
+        }
+
+        jsMain.dependencies {
+            implementation(libs.ktor.client.js)
+            implementation(libs.ktor.client.logging)
+            implementation(libs.ktor.serialization.kotlinx.json)
         }
     }
 }

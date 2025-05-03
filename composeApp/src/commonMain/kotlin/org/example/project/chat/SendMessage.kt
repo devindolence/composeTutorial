@@ -14,8 +14,8 @@ import androidx.compose.ui.input.key.*
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
-import org.chat.ChatClient
-import org.chat.Message
+import org.example.project.chat.ChatClient
+import org.example.project.chat.Message
 
 @Composable
 fun SendMessage(

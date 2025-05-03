@@ -50,6 +50,7 @@ kotlin {
                 implementation(libs.androidx.lifecycle.viewmodel)
                 implementation(libs.androidx.lifecycle.runtime.compose)
                 implementation(projects.shared)
+                implementation(libs.kotlinx.coroutines.swing)
 
                 implementation("io.ktor:ktor-client-core:3.1.2")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
@@ -58,7 +59,6 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
-                implementation(libs.kotlinx.coroutines.swing)
 
                 implementation("io.ktor:ktor-client-cio:3.1.2")
             }

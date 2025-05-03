@@ -1,14 +1,32 @@
 package org.example.project
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import org.chat.ChatAppWithScaffold
+import org.example.project.chat.ChatAppWithScaffold
+import org.example.project.login.AuthScreen
+
+sealed class ScreenState {
+    object Login : ScreenState()
+    data class Chat(val userId: String, val token: String) : ScreenState()
+}
 
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
         title = "KotlinProject",
     ) {
-        ChatAppWithScaffold()
+        var screenState by remember { mutableStateOf<ScreenState>(ScreenState.Login) }
+
+        when (val state = screenState) {
+            is ScreenState.Login -> AuthScreen { userId, jwtToken ->
+                screenState = ScreenState.Chat(userId, jwtToken)
+            }
+
+            is ScreenState.Chat -> ChatAppWithScaffold(username = state.userId, token = state.token)
+        }
     }
 }

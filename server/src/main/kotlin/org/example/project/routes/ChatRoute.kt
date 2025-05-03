@@ -10,7 +10,7 @@ import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.serialization.json.Json
-import org.chat.Message
+import org.example.project.chat.Message
 import org.example.project.ClientSession
 import org.example.project.connections
 import java.util.*
@@ -33,7 +33,7 @@ fun Application.chatRoute() {
                             const token = params.get('token');
                             if (!token) {
                                 alert("토큰이 없습니다. 로그인 페이지로 이동합니다.");
-                                window.location.href = "/loginPage"; // 로그인 페이지 경로 설정
+                                window.location.href = "/login-jwt"; // 로그인 페이지 경로 설정
                                 return;
                             }
                             // WebSocket 연결 시 토큰을 쿼리 파라미터로 포함시킵니다.

@@ -47,7 +47,7 @@ inline fun ChatMessage(isMyMessage: Boolean, message: Message) {
         Row(verticalAlignment = Alignment.Bottom) {
             if (!isMyMessage) {
                 Column {
-                    UserPic(message.user)
+                    UserPic(message.userProfile)
                 }
                 Spacer(Modifier.size(2.dp))
                 Column {
@@ -72,13 +72,13 @@ inline fun ChatMessage(isMyMessage: Boolean, message: Message) {
                         if(!isMyMessage) {
                             Row(verticalAlignment = Alignment.Bottom) {
                                 Text(
-                                    text = message.user.name,
+                                    text = message.userProfile.name,
                                     style = MaterialTheme.typography.body1.copy(
                                         fontWeight = FontWeight.SemiBold,
                                         letterSpacing = 0.sp,
                                         fontSize = 14.sp
                                     ),
-                                    color = message.user.color
+                                    color = message.userProfile.color
                                 )
                             }
                         }
