@@ -7,12 +7,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import org.example.project.chat.ChatAppWithScaffold
+import org.example.project.config.ScreenState
 import org.example.project.login.AuthScreen
-
-sealed class ScreenState {
-    object Login : ScreenState()
-    data class Chat(val userId: String, val token: String) : ScreenState()
-}
 
 fun main() = application {
     Window(

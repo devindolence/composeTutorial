@@ -21,6 +21,7 @@ dependencies {
     implementation(libs.ktor.server.websockets)
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.server.content.negotiation)
+    implementation("io.ktor:ktor-server-cors:3.1.2")
 
     testImplementation(libs.junit)
     testImplementation(libs.ktor.server.core)

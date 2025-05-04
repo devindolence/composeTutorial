@@ -10,6 +10,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.example.project.config.TokenStorage
 
 object ChatClient {
     private lateinit var session: DefaultClientWebSocketSession
@@ -23,7 +24,14 @@ object ChatClient {
                 method = HttpMethod.Get,
                 host = "localhost",
                 port = 8080,
-                path = "/chat"
+                path = "/chat",
+                block = {
+                    // JWT 토큰을 쿼리 파라미터로 추가
+                    val token = TokenStorage.getToken()
+                    if (token != null) {
+                        url.parameters.append("token", token)
+                    }
+                }
             )
             launch {
                 try {
@@ -44,7 +52,7 @@ object ChatClient {
 
     fun sendMessage(message: Message) {
         CoroutineScope(Dispatchers.Main).launch {
-            if (::session.isInitialized && session.isActive) {
+            if (::session.isInitialized) {
                 val messageJson = Json.encodeToString(message)
                 println("Sending message: $messageJson")
                 session.send(Frame.Text(messageJson))

@@ -4,4 +4,9 @@ html, body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    font-family: "Noto Sans Kr", sans-serif;
+}
+
+#root > {
+    font-family: inherit;
 }
