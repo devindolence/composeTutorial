@@ -29,6 +29,9 @@ kotlin {
                 }
             }
         }
+        compilerOptions {
+            freeCompilerArgs.add("-Xwasm-attach-js-exception")
+        }
         binaries.executable()
     }
 
@@ -65,6 +68,8 @@ kotlin {
         }
         val wasmJsMain by getting {
             dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-browser:0.3")
+                implementation(npm("@js-joda/timezone", "2.3.0"))
                 implementation("io.ktor:ktor-client-js:3.1.2")
             }
         }
